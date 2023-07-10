@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_outline_home_24"
+            android:title="@string/menu_home"/>
+        <item
+            android:id="@+id/myCoursesFragment"
+            android:icon="@drawable/ic_my_courses_01"
+            android:title="My Courses"/>
+        <item
+            android:id="@+id/liveClassFragment"
+            android:icon="@drawable/ic_time_table_01"
+            android:title="Time Table" />
+        <item
+            android:id="@+id/performanceFragment"
+            android:icon="@drawable/ic_performance_01"
+            android:title="Performance" />
+        <item
+            android:id="@+id/coursesFragment"
+            android:icon="@drawable/ic_courses_01"
+            android:title="Courses" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_gallery_01"
+            android:title="@string/menu_gallery" />
+        <item
+            android:id="@+id/purchaseHistoryFragment"
+            android:icon="@drawable/ic_purchase_history_01"
+            android:title="Purchase History" />
+        <item
+            android:id="@+id/bolgFragment"
+            android:icon="@drawable/ic_blog_01"
+            android:title="Blog" />
+        <item
+            android:id="@+id/settingsFragment"
+            android:icon="@drawable/ic_setting_01"
+            android:title="Settings" />
+    </group>
+</menu>

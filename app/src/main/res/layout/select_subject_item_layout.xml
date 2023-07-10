@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="6dp"
+    android:layout_margin="10dp"
+    app:cardElevation="0dp"
+    android:id="@+id/subject_card">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp">
+        <ImageView
+            android:id="@+id/item_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:background="@drawable/upcoming_item_bg">
+
+            <TextView
+                android:id="@+id/board_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/price_tv"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toLeftOf="@+id/view_img"
+                android:text="Science || SEBA || Class 9"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/price_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="78888"
+                android:layout_toLeftOf="@+id/view_img"
+                android:textColor="@color/white"
+                android:textSize="13sp"/>
+
+            <ImageView
+                android:id="@+id/view_img"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_baseline_launch_24"
+                app:tint="@color/white" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp">
+                <ImageView
+                    android:id="@+id/select_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_baseline_check_circle_24"/>
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/select_lot"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    app:lottie_rawRes="@raw/click_new"
+                    app:lottie_loop="true"
+                    app:lottie_autoPlay="true"/>
+                <TextView
+                    android:id="@+id/purchased_htv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Purchased"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="10sp"/>
+            </FrameLayout>
+
+        </RelativeLayout>
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

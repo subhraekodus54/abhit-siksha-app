@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/topic_title_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="hedvhevdhejh"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/topic_type_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/topic_title_tv"
+        app:layout_constraintStart_toStartOf="@+id/topic_title_tv"
+        app:layout_constraintEnd_toEndOf="@+id/topic_title_tv"
+        android:text="snjksnjk"
+        android:layout_marginTop="5dp"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/color_grey"
+        android:layout_marginTop="7dp"
+        app:layout_constraintTop_toBottomOf="@+id/topic_type_tv"
+        app:layout_constraintStart_toStartOf="@+id/topic_type_tv"
+        app:layout_constraintEnd_toEndOf="@+id/topic_type_tv"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

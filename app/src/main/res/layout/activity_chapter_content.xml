@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activity.ChapterContentActivity">
+
+    <io.github.florent37.shapeofview.shapes.ArcView
+        android:id="@+id/arc_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        app:shape_arc_height="20dp"
+        app:shape_arc_position="bottom"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="50dp"
+            android:background="@color/topic_color">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/ic_group_1"
+                    android:layout_marginEnd="-40dp"
+                    android:layout_marginTop="-50dp"/>
+                <RelativeLayout
+                    android:id="@+id/play_test_lay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/mcq_test_bg"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="20dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp">
+
+                    <TextView
+                        android:id="@+id/mcq_test_htv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:text="MCQ Test"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_light_bulb_02"
+                        android:layout_toRightOf="@+id/mcq_test_htv"/>
+                </RelativeLayout>
+
+            </FrameLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/back_arrow"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:cardElevation="20dp"
+                app:cardCornerRadius="100dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:tint="@color/theme_blue"
+                    android:src="@drawable/ic_baseline_arrow_back_24"/>
+            </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/lesson_name_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="100dp"
+                app:layout_constraintTop_toBottomOf="@+id/back_arrow"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="40dp"
+                android:textSize="24dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </io.github.florent37.shapeofview.shapes.ArcView>
+
+    <TextView
+        android:id="@+id/concepts_htv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/arc_view"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:text="Concepts"/>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/topic_shimmer_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/concepts_htv">
+        <include layout="@layout/lessons_shimmer_lay"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+    <ImageView
+        android:id="@+id/no_data_img"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:padding="30dp"
+        android:background="@drawable/ic_yo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_no_chepter_02_02"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/arc_view"/>
+        <TextView
+            android:id="@+id/no_data_htv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No topic found for this chapter"
+            app:layout_constraintTop_toBottomOf="@+id/no_data_img"
+            app:layout_constraintStart_toStartOf="@+id/no_data_img"
+            app:layout_constraintEnd_toEndOf="@+id/no_data_img"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/topic_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/concepts_htv"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

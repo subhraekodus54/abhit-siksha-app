@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.abithshiksha" >
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_logo"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_logo_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AbithShiksha"
+        android:usesCleartextTraffic="true" >
+        <activity
+            android:name=".JobsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.EnrollNowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.WebViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.NoInternetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.PaymentStatusActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.MySubjectsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.McqResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.TestPlayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.McqSetsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.PdfViewerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.ViewArticleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.SubTopicActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.ChapterContentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.LessonsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.CartDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.CoursesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.VideoPlayActivity"
+            android:configChanges="orientation|screenSize|screenLayout"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name=".view.activity.AddReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.CourseDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.AuthActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.SplashActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AbithShiksha.NoActionBar" />
+        <!--
+<meta-data
+            android:name="com.razorpay.ApiKey"
+            android:value="rzp_test_4TLnP7Gwi243a2" />
+        -->
+        <activity
+            android:name="com.razorpay.CheckoutActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@style/CheckoutTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <data
+                    android:host="rzp.io"
+                    android:scheme="io.rzp" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name="com.razorpay.RzpTokenReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="rzp.device_token.share" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".service.VideoWatchTimeService" />
+        <service
+            android:name=".helper.MyFirebaseMessagingService"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>

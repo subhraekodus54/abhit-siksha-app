@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".view.fragment.TopicBottomSheetFragment">
+    <ImageView
+        android:id="@+id/no_data_img"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:padding="30dp"
+        android:background="@drawable/ic_yo"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_no_chepter_02_02"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:id="@+id/no_data_htv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No topic found for this lesson"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/no_data_img"
+        android:layout_centerHorizontal="true"/>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/topic_list_shimmer_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/lessons_shimmer_lay"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/topic_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</RelativeLayout>

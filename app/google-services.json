@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "37032446307",
+    "project_id": "abhith-siksha",
+    "storage_bucket": "abhith-siksha.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37032446307:android:7629d3e34fc79db258ab56",
+        "android_client_info": {
+          "package_name": "com.example.abithshiksha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37032446307-pnjk39ll3rf5dr8jcn74fsucuop35evl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUEE9aJ5IrQO0peSXQ4deAjB01AS4JR38"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37032446307-pnjk39ll3rf5dr8jcn74fsucuop35evl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

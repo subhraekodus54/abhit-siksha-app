@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/you_will_get_bg">
+    <ImageView
+        android:id="@+id/img_view"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:src="@color/light_blue"/>
+
+    <TextView
+        android:id="@+id/textview_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toRightOf="@+id/img_view"
+        android:text="12 Learning metarials"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_toLeftOf="@+id/arrow_forward"/>
+
+    <TextView
+        android:id="@+id/textview_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textview_1"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toRightOf="@+id/img_view"
+        android:text="Exclusive audio and video lessons from qualified teachers sbhhd jvha jdcjsch djbcjhsvc cvhsch"
+        android:textSize="12sp"
+        android:layout_toLeftOf="@+id/arrow_forward"/>
+
+    <ImageView
+        android:id="@+id/arrow_forward"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+        android:layout_marginEnd="10dp"/>
+
+</RelativeLayout>

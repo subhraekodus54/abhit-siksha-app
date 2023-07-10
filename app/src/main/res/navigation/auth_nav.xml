@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_nav"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.abithshiksha.view.fragment.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPassEmailNoFragment"
+            app:popUpToInclusive="false"
+            app:destination="@id/forgotPassEmailNoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.abithshiksha.view.fragment.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" />
+    <fragment
+        android:id="@+id/forgotPassEmailNoFragment"
+        android:name="com.example.abithshiksha.view.fragment.ForgotPassEmailNoFragment"
+        android:label="fragment_forgot_pass_email_no"
+        tools:layout="@layout/fragment_forgot_pass_email_no" >
+        <action
+            android:id="@+id/action_forgotPassEmailNoFragment_to_forgotPassOtpFragment"
+            app:popUpTo="@id/auth_nav"
+            app:popUpToInclusive="true"
+            app:destination="@id/forgotPassOtpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotPassOtpFragment"
+        android:name="com.example.abithshiksha.view.fragment.ForgotPassOtpFragment"
+        android:label="fragment_forgot_pass_otp"
+        tools:layout="@layout/fragment_forgot_pass_otp" >
+        <action
+            android:id="@+id/action_forgotPassOtpFragment_to_forgotPassNewPassFragment"
+            app:popUpTo="@id/auth_nav"
+            app:popUpToInclusive="true"
+            app:destination="@id/forgotPassNewPassFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotPassNewPassFragment"
+        android:name="com.example.abithshiksha.view.fragment.ForgotPassNewPassFragment"
+        android:label="fragment_forgot_pass_new_pass"
+        tools:layout="@layout/fragment_forgot_pass_new_pass" >
+        <action
+            android:id="@+id/action_forgotPassNewPassFragment_to_loginFragment"
+            app:popUpTo="@id/auth_nav"
+            app:popUpToInclusive="true"
+            app:destination="@id/loginFragment" />
+    </fragment>
+</navigation>

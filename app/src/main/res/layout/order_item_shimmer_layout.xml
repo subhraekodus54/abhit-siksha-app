@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+        <View
+            android:id="@+id/view_1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/color_grey"
+            android:layout_marginStart="15dp"/>
+
+        <View
+            android:id="@+id/view_2"
+            android:layout_width="150dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/view_1"
+            android:background="@color/color_grey" />
+
+        <View
+            android:layout_width="70dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/view_2"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@+id/view_1"
+            android:background="@color/color_grey" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+        <View
+            android:id="@+id/view_1_2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/color_grey"
+            android:layout_marginStart="15dp"/>
+
+        <View
+            android:id="@+id/view_2_2"
+            android:layout_width="150dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/view_1_2"
+            android:background="@color/color_grey" />
+
+        <View
+            android:layout_width="70dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/view_2_2"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@+id/view_1_2"
+            android:background="@color/color_grey" />
+    </RelativeLayout>
+
+</LinearLayout>
