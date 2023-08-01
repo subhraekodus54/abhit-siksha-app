@@ -23,7 +23,7 @@
         android:theme="@style/Theme.AbithShiksha"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name=".JobsActivity"
+            android:name=".view.activity.JobsActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.EnrollNowActivity"
