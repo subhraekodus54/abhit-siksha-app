@@ -42,11 +42,12 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/nav_btn"
         android:layout_alignBottom="@+id/nav_btn"
+        android:layout_marginEnd="4dp"
         android:layout_toLeftOf="@+id/cart_img"
         android:padding="7dp"
-        android:layout_marginEnd="4dp"
         android:src="@drawable/ic_baseline_notifications_24"
-        app:tint="@color/theme_blue" />
+        app:tint="@color/theme_blue"
+        android:visibility="invisible"/>
 
 
     <FrameLayout

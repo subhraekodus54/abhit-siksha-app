@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(){
             //it's possible to do more actions on several items, if there is a large amount of items I prefer switch(){case} instead of if()
             if (id == R.id.bolgFragment) {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse("http://206.189.132.212/abhith-siksha/public/blog")
+                i.data = Uri.parse("http://abhithsiksha.com/blog")
                 startActivity(i)
             }
             //This is for maintaining the behavior of the Navigation view

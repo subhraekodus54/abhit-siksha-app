@@ -70,7 +70,7 @@ class HomeFragment : Fragment(), SubjectClickListener {
 
         PushDownAnim.setPushDownAnimTo(binding.teacherBtn).setOnClickListener {
             val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse("http://206.189.132.212/abhith-siksha/public/become-a-teacher")
+            i.data = Uri.parse("http://abhithsiksha.com/become-a-teacher")
             startActivity(i)
         }
 
