@@ -7,27 +7,36 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.abithshiksha.R
 import com.example.abithshiksha.databinding.ActivityCoursesBinding
 import com.example.abithshiksha.helper.CourseSelectListener
 import com.example.abithshiksha.helper.PrefManager
+import com.example.abithshiksha.helper.click_listener.AddOnsClickListener
+import com.example.abithshiksha.model.pojo.add_ons.AddOnsModel
 import com.example.abithshiksha.model.pojo.get_filtered_subject.Subject
 import com.example.abithshiksha.model.repo.Outcome
+import com.example.abithshiksha.view.adapter.AddOnsListAdapter
 import com.example.abithshiksha.view.adapter.SelectSubjectAdapter
 import com.example.abithshiksha.view_model.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.thekhaeng.pushdownanim.PushDownAnim
 import com.user.caregiver.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class CoursesActivity : AppCompatActivity(), CourseSelectListener {
+class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickListener {
     private lateinit var binding: ActivityCoursesBinding
 
     var classList: MutableList<String> =  mutableListOf()
     var streamList: Array<String> =  arrayOf("Select Stream","Arts","Commerce","Science")
     var subjectList: MutableList<Int> = mutableListOf()
     var boardList: MutableList<String> =  mutableListOf()
+    var addOnsList: MutableList<AddOnsModel> =  mutableListOf()
 
     private var class_global: String = ""
     private var std: Int = 0
@@ -172,7 +181,30 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener {
             startActivity(intent)
         }
 
+        PushDownAnim.setPushDownAnimTo(binding.addOnBtn).setOnClickListener {
+            showAddOnsBottomSheet()
+        }
+
+        //get board list
         getBoards()
+
+        //test add ons
+        addOnsList.add(AddOnsModel(1,"Mcq Test", 10))
+        addOnsList.add(AddOnsModel(2,"Live classes", 20))
+        addOnsList.add(AddOnsModel(3,"Query solution", 5))
+        addOnsList.add(AddOnsModel(4,"Extra video", 30))
+
+        binding.courseHtv.setOnClickListener {
+            val count  = addOnsList.filter { it.isSelected == true }.size
+            val list: MutableList<Int> = mutableListOf()
+            for (i in addOnsList){
+                if (i.isSelected == true){
+                    list.add(i.id)
+                }
+            }
+            Toast.makeText(this, list.toString(), Toast.LENGTH_SHORT).show()
+
+        }
     }
 
     private fun setupStreamSpinner() {
@@ -315,7 +347,6 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener {
             }
         }
         binding.priceTv.text = "₹${subject_price.toString()}"
-        //binding.countTv.text = "${subject_count.toString()}"
     }
 
     private fun getFilteredSubject(
@@ -562,7 +593,6 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener {
         }
     }
 
-
     private fun getProfile(
         token: String
     ){
@@ -594,4 +624,42 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener {
         }
     }
 
+    private fun showAddOnsBottomSheet(){
+        val dialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.add_ons_bottomsheet_layout, null)
+
+        val btnClear = view.findViewById<ImageView>(R.id.clear_btn)
+        val coursesRecycler = view.findViewById<RecyclerView>(R.id.add_ons_recycler)
+
+        //setup recycler
+        fillAddOnRecyclerView(addOnsList, coursesRecycler)
+
+        //care type select
+        btnClear.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setCancelable(true)
+        dialog.setContentView(view)
+        dialog.show()
+    }
+
+    private fun fillAddOnRecyclerView(list: List<AddOnsModel>, recyclerView: RecyclerView) {
+        val linearLayoutManager = LinearLayoutManager(this)
+        recyclerView.apply {
+            layoutManager = linearLayoutManager
+            setHasFixedSize(true)
+            isFocusable = false
+            adapter = AddOnsListAdapter(list.toMutableList(),this@CoursesActivity, this@CoursesActivity)
+        }
+    }
+    override fun onClick(view: View, id: Int, isChecked: Boolean, price: Int) {
+        addOnsList.find { it.id == id }?.isSelected = isChecked
+        if(isChecked){
+            subject_price += price
+        }else{
+            subject_price -= price
+        }
+        binding.priceTv.text = "₹${subject_price}"
+    }
 }
