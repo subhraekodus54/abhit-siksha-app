@@ -15,6 +15,8 @@ import com.example.abithshiksha.model.repo.fp_send_otp_repo.SendOtpRepository
 import com.example.abithshiksha.model.repo.fp_send_otp_repo.SendOtpRepositoryImpl
 import com.example.abithshiksha.model.repo.fp_verify_otp_repo.VerifyOtpRepository
 import com.example.abithshiksha.model.repo.fp_verify_otp_repo.VerifyOtpRepositoryImpl
+import com.example.abithshiksha.model.repo.get_addons_repo.GetAddonsRepository
+import com.example.abithshiksha.model.repo.get_addons_repo.GetAddonsRepositoryImpl
 import com.example.abithshiksha.model.repo.get_all_class_repo.GetAllClassRepository
 import com.example.abithshiksha.model.repo.get_all_class_repo.GetAllClassRepositoryImpl
 import com.example.abithshiksha.model.repo.get_all_performance_repo.GetAllPerformanceRepository
@@ -248,4 +250,7 @@ val appModule = module {
 
     single<GetTimeTableRepository> { GetTimeTableRepositoryImpl(get()) }
     viewModel { GetTimeTableViewModel(get()) }
+
+    single<GetAddonsRepository> { GetAddonsRepositoryImpl(get()) }
+    viewModel { GetAddonsViewModel(get()) }
 }

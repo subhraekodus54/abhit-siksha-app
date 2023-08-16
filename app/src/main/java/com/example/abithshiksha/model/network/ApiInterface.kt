@@ -1,5 +1,6 @@
 package com.example.abithshiksha.model.network
 
+import com.example.abithshiksha.model.pojo.add_ons.GetAddonsResponse
 import com.example.abithshiksha.model.pojo.add_review.AddReviewRequest
 import com.example.abithshiksha.model.pojo.add_review.AddReviewResponse
 import com.example.abithshiksha.model.pojo.remove_cart.RemoveCartResponse
@@ -346,4 +347,11 @@ interface ApiInterface {
     suspend fun getTimeTable(
         @Header("Authorization") token: String,
     ): GetTimeTableResponse?
+
+    @GET("addon/get")
+    suspend fun getAddOns(
+        @Header("Authorization") token: String,
+        @Query("board_id") borad_id: Int?,
+        @Query("class") standard: String?
+    ): GetAddonsResponse?
 }

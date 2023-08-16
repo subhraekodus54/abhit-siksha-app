@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +16,7 @@ import com.example.abithshiksha.databinding.ActivityCoursesBinding
 import com.example.abithshiksha.helper.CourseSelectListener
 import com.example.abithshiksha.helper.PrefManager
 import com.example.abithshiksha.helper.click_listener.AddOnsClickListener
-import com.example.abithshiksha.model.pojo.add_ons.AddOnsModel
+import com.example.abithshiksha.model.pojo.add_ons.Addon
 import com.example.abithshiksha.model.pojo.get_filtered_subject.Subject
 import com.example.abithshiksha.model.repo.Outcome
 import com.example.abithshiksha.view.adapter.AddOnsListAdapter
@@ -36,11 +35,14 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
     var streamList: Array<String> =  arrayOf("Select Stream","Arts","Commerce","Science")
     var subjectList: MutableList<Int> = mutableListOf()
     var boardList: MutableList<String> =  mutableListOf()
-    var addOnsList: MutableList<AddOnsModel> =  mutableListOf()
+    var addOnsList: MutableList<Addon> =  mutableListOf()
+    var boardIdList: MutableList<Int> =  mutableListOf()
 
     private var class_global: String = ""
     private var std: Int = 0
     private var board = ""
+    private var boardId = 0
+
     private var stream = ""
     private var subject_price: Int = 0
     private var subject_count: Int = 0
@@ -50,6 +52,7 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
     private val mGetClassListViewModel: GetClassListViewModel by viewModel()
     private val mGetBoardsViewModel: GetBoardsViewModel by viewModel()
     private val mGetProfileViewModel: GetProfileViewModel by viewModel()
+    private val mGetAddonsViewModel: GetAddonsViewModel by viewModel()
 
     lateinit var adapter: SelectSubjectAdapter
     private lateinit var accessToken: String
@@ -157,6 +160,9 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
             binding.noDataLot.gone()
             binding.noSubjectTv.gone()
             getFilteredSubject(board,class_global,stream,accessToken,false)
+            if(boardId != 0){
+                getAddons(accessToken, boardId, class_global)
+            }
         }
 
         //custom package
@@ -174,6 +180,9 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
             binding.noDataLot.gone()
             binding.noSubjectTv.gone()
             getFilteredSubject(board,class_global,stream,accessToken,true)
+            if(boardId != 0){
+                getAddons(accessToken, boardId, class_global)
+            }
         }
 
         binding.cartBtn.setOnClickListener {
@@ -188,13 +197,7 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
         //get board list
         getBoards()
 
-        //test add ons
-        addOnsList.add(AddOnsModel(1,"Mcq Test", 10))
-        addOnsList.add(AddOnsModel(2,"Live classes", 20))
-        addOnsList.add(AddOnsModel(3,"Query solution", 5))
-        addOnsList.add(AddOnsModel(4,"Extra video", 30))
-
-        binding.courseHtv.setOnClickListener {
+        /*binding.courseHtv.setOnClickListener {
             val count  = addOnsList.filter { it.isSelected == true }.size
             val list: MutableList<Int> = mutableListOf()
             for (i in addOnsList){
@@ -204,7 +207,7 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
             }
             Toast.makeText(this, list.toString(), Toast.LENGTH_SHORT).show()
 
-        }
+        }*/
     }
 
     private fun setupStreamSpinner() {
@@ -518,7 +521,11 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
                             for (i in outcome.data.result.board){
                                 boardList.add(i.exam_board)
                             }
-                            setupBoardSpinner(boardList)
+
+                            for (i in outcome.data.result.board){
+                                boardIdList.add(i.id)
+                            }
+                            setupBoardSpinner(boardList, boardIdList)
                         }else{
                             binding.boardSpinner.gone()
                             binding.noBoardTv.visible()
@@ -542,13 +549,14 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
         }
     }
 
-    private fun setupBoardSpinner(boardList: List<String>) {
+    private fun setupBoardSpinner(boardList: List<String>, boardIdList: List<Int>) {
         val arrayAdapter2 = ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,boardList)
         binding.boardSpinner.adapter = arrayAdapter2
         binding.boardSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener,
             AdapterView.OnItemClickListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 board = boardList[p2]
+
                 if(p2 != 0){
                     classList = mutableListOf()
                     getClassList(board)
@@ -563,6 +571,7 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
                     binding.noDataLot.gone()
                     binding.noSubjectTv.gone()
                     course_type = 0
+                    boardId = boardIdList[p2-1]
 
                 }else{
                     //Toast.makeText(this@CoursesActivity,board,Toast.LENGTH_SHORT).show()
@@ -580,6 +589,7 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
                     binding.noDataLot.gone()
                     binding.noSubjectTv.gone()
                     binding.priceTv.text = "₹0"
+                    boardId = 0
                 }
             }
 
@@ -624,6 +634,36 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
         }
     }
 
+    private fun getAddons(
+        token: String,
+        board_id: Int,
+        standard: String
+    ){
+        mGetAddonsViewModel.getAddons(token, board_id, standard).observe(this) { outcome ->
+            when (outcome) {
+                is Outcome.Success -> {
+                    if (outcome.data.status == 1) {
+                        addOnsList = mutableListOf()
+                        if(outcome.data.result.addons.size != 0 && outcome.data.result.addons != null){
+                            addOnsList.addAll(outcome.data.result.addons)
+                        }
+                    }else{
+                        Toast.makeText(this, outcome.data.result.message, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is Outcome.Failure<*> -> {
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT)
+                        .show()
+                    Log.i("statusMsg", outcome.e.message.toString())
+
+                    outcome.e.printStackTrace()
+                    Log.i("status", outcome.e.cause.toString())
+                }
+            }
+        }
+    }
+
     private fun showAddOnsBottomSheet(){
         val dialog = BottomSheetDialog(this)
         val view = layoutInflater.inflate(R.layout.add_ons_bottomsheet_layout, null)
@@ -644,7 +684,7 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
         dialog.show()
     }
 
-    private fun fillAddOnRecyclerView(list: List<AddOnsModel>, recyclerView: RecyclerView) {
+    private fun fillAddOnRecyclerView(list: List<Addon>, recyclerView: RecyclerView) {
         val linearLayoutManager = LinearLayoutManager(this)
         recyclerView.apply {
             layoutManager = linearLayoutManager
