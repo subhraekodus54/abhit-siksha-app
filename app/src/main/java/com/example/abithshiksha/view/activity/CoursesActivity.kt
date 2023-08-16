@@ -67,6 +67,7 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener {
         binding.noDataLot.gone()
         binding.noSubjectTv.gone()
         binding.noClassTv.gone()
+        binding.addOnBtn.gone()
 
         binding.backArrow.setOnClickListener {
             finish()
@@ -300,10 +301,18 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener {
             subject_price += price
             subject_count += 1
             subjectList.add(id)
+
+            binding.addOnBtn.visible()
         }else{
             subject_price -= price
             subject_count -= 1
             subjectList.remove(id)
+
+            if(subjectList.size < 1){
+                binding.addOnBtn.gone()
+            }else{
+                binding.addOnBtn.visible()
+            }
         }
         binding.priceTv.text = "₹${subject_price.toString()}"
         //binding.countTv.text = "${subject_count.toString()}"
@@ -332,12 +341,18 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener {
                             for (i in outcome.data.result.result.subjects){
                                 subjectList.add(i.id)
                             }
+                            if(outcome.data.result.result.subjects != null && outcome.data.result.result.subjects.size > 0){
+                                binding.addOnBtn.visible()
+                            }else{
+                                binding.addOnBtn.gone()
+                            }
                         }else{
                             subject_count  = 0
                             subject_price = 0
                             binding.priceTv.text = "₹"+subject_price.toString()
                             //binding.countTv.text = subject_count.toString()
                             subjectList = mutableListOf()
+                            binding.addOnBtn.gone()
                         }
                         if(outcome.data.result.result.subjects.isNotEmpty()){
                             binding.subjectRecycler.visible()
