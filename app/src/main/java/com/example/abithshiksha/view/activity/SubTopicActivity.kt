@@ -69,7 +69,7 @@ class SubTopicActivity : AppCompatActivity() {
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Videos"))
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Docs"))
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Articles"))
-
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Add Ons"))
 
         binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
         val adapter = SubTopicPagerAdapter(this, this.supportFragmentManager, binding.tabLayout.tabCount, topic_id)

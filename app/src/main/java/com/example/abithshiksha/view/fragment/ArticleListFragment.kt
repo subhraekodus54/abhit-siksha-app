@@ -94,16 +94,6 @@ class ArticleListFragment(private val topic_id: Int) : Fragment() {
         }
     }
 
-    private fun fillArticleRecycler(list: List<Content>) {
-        val linearLayoutManager = LinearLayoutManager(requireActivity())
-        binding.articleRecycler.apply {
-            layoutManager = linearLayoutManager
-            setHasFixedSize(true)
-            isFocusable = false
-            adapter = ArticleListAdapter(list.toMutableList(),requireActivity())
-        }
-    }
-
     private fun getArticle(
         token: String,
         topic_id: Int,

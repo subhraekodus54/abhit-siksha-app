@@ -13,11 +13,12 @@ class AddToCartRepositoryImpl(private val context: Context): AddToCartRepository
         course_type: Int,
         subjects: List<Int>,
         is_buy: Int,
+        addons: List<Int>,
         token: String
     ): Outcome<AddToCartResponse> {
         val apiResponse = MutableLiveData<Outcome<AddToCartResponse>>()
         try {
-            val response = apiService.addToCart(AddToCartRequest(course_type,subjects,is_buy),token)
+            val response = apiService.addToCart(AddToCartRequest(course_type,subjects,is_buy,addons),token)
             apiResponse.value = Outcome.success(response!!)
         } catch (e: Throwable) {
             apiResponse.value = Outcome.failure(e)

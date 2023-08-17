@@ -286,10 +286,18 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/add_on_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/white" />
+                    android:layout_weight="1">
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/add_on_lot"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:lottie_rawRes="@raw/add_on"
+                        app:lottie_loop="true"
+                        app:lottie_autoPlay="true"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <TextView

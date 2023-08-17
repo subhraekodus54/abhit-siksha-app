@@ -9,8 +9,9 @@ class AddToCartViewModel(private val mAddToCartRepository: AddToCartRepository):
         course_type: Int,
         subjects: List<Int>,
         is_buy: Int,
+        addons: List<Int>,
         token: String
     ) = liveData {
-        emit(mAddToCartRepository.addToCart(course_type, subjects, is_buy, token))
+        emit(mAddToCartRepository.addToCart(course_type, subjects, is_buy, addons, token))
     }
 }

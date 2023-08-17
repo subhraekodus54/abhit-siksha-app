@@ -97,7 +97,13 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
                     if(course_type != 0){
                         if(subjectList.size > 0){
                             if(isConnectedToInternet()){
-                                addToCart(course_type,subjectList,accessToken,1)
+                                val list: MutableList<Int> = mutableListOf()
+                                for (i in addOnsList){
+                                    if (i.isSelected == true){
+                                        list.add(i.id)
+                                    }
+                                }
+                                addToCart(course_type,subjectList,accessToken,1, list)
                             }else{
                                 Toast.makeText(this,"No internet connection.",Toast.LENGTH_LONG).show()
                             }
@@ -121,7 +127,13 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
                     if(course_type != 0){
                         if(subjectList.size > 0){
                             if(isConnectedToInternet()){
-                                addToCart(course_type,subjectList,accessToken,0)
+                                val list: MutableList<Int> = mutableListOf()
+                                for (i in addOnsList){
+                                    if (i.isSelected == true){
+                                        list.add(i.id)
+                                    }
+                                }
+                                addToCart(course_type,subjectList,accessToken,0, list)
                             }else{
                                 Toast.makeText(this,"No internet connection.",Toast.LENGTH_LONG).show()
                             }
@@ -197,17 +209,6 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
         //get board list
         getBoards()
 
-        /*binding.courseHtv.setOnClickListener {
-            val count  = addOnsList.filter { it.isSelected == true }.size
-            val list: MutableList<Int> = mutableListOf()
-            for (i in addOnsList){
-                if (i.isSelected == true){
-                    list.add(i.id)
-                }
-            }
-            Toast.makeText(this, list.toString(), Toast.LENGTH_SHORT).show()
-
-        }*/
     }
 
     private fun setupStreamSpinner() {
@@ -384,7 +385,7 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
                             subject_count  = 0
                             subject_price = 0
                             binding.priceTv.text = "₹"+subject_price.toString()
-                            //binding.countTv.text = subject_count.toString()
+
                             subjectList = mutableListOf()
                             binding.addOnBtn.gone()
                         }
@@ -461,11 +462,12 @@ class CoursesActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickLi
         course_type: Int,
         subjects: List<Int>,
         token: String,
-        isBuy: Int
+        isBuy: Int,
+        addons: List<Int>
     ){
         val loader = this.loadingDialog()
         loader.show()
-        mAddToCartViewModel.addToCart(course_type, subjects, isBuy, token).observe(this) { outcome ->
+        mAddToCartViewModel.addToCart(course_type, subjects, isBuy, addons, token).observe(this) { outcome ->
             loader.dismiss()
             when (outcome) {
                 is Outcome.Success -> {

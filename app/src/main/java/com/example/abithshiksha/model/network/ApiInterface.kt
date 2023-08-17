@@ -17,6 +17,7 @@ import com.example.abithshiksha.model.pojo.fp_send_otp.SendOtpRequest
 import com.example.abithshiksha.model.pojo.fp_send_otp.SendOtpResponse
 import com.example.abithshiksha.model.pojo.fp_verify_otp.VerifyOtpRequest
 import com.example.abithshiksha.model.pojo.fp_verify_otp.VerifyOtpResponse
+import com.example.abithshiksha.model.pojo.get_addons.GetSelectedAddonsResponse
 import com.example.abithshiksha.model.pojo.get_all_class.GetAllClassResponse
 import com.example.abithshiksha.model.pojo.get_all_performance.GetAllPerformanceResponse
 import com.example.abithshiksha.model.pojo.get_article.GetArticleResponse
@@ -354,4 +355,9 @@ interface ApiInterface {
         @Query("board_id") borad_id: Int?,
         @Query("class") standard: String?
     ): GetAddonsResponse?
+
+    @GET("addon/get-selected")
+    suspend fun getSelectedAddOns(
+        @Header("Authorization") token: String,
+    ): GetSelectedAddonsResponse?
 }

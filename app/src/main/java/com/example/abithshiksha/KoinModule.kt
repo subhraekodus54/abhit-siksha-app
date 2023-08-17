@@ -57,6 +57,8 @@ import com.example.abithshiksha.model.repo.get_profile_repo.GetProfileRepository
 import com.example.abithshiksha.model.repo.get_profile_repo.GetProfileRepositoryImpl
 import com.example.abithshiksha.model.repo.get_review_repo.GetReviewRepository
 import com.example.abithshiksha.model.repo.get_review_repo.GetReviewRepositoryImpl
+import com.example.abithshiksha.model.repo.get_selected_addons_repo.GetSelectedAddOnsRepository
+import com.example.abithshiksha.model.repo.get_selected_addons_repo.GetSelectedAddOnsRepositoryImpl
 import com.example.abithshiksha.model.repo.get_subject_performance.GetSubjectPerformanceRepository
 import com.example.abithshiksha.model.repo.get_subject_performance.GetSubjectPerformanceRepositoryImpl
 import com.example.abithshiksha.model.repo.get_suggestion_courses.GetSuggestionCoursesRepository
@@ -253,4 +255,7 @@ val appModule = module {
 
     single<GetAddonsRepository> { GetAddonsRepositoryImpl(get()) }
     viewModel { GetAddonsViewModel(get()) }
+
+    single<GetSelectedAddOnsRepository> { GetSelectedAddOnsRepositoryImpl(get()) }
+    viewModel { GetSelectedAddonViewModel(get()) }
 }

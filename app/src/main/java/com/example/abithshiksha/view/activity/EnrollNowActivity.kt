@@ -6,38 +6,52 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.abithshiksha.R
 import com.example.abithshiksha.databinding.ActivityEnrollNowBinding
 import com.example.abithshiksha.databinding.ActivityLessonsBinding
 import com.example.abithshiksha.helper.CourseSelectListener
 import com.example.abithshiksha.helper.PrefManager
+import com.example.abithshiksha.helper.click_listener.AddOnsClickListener
+import com.example.abithshiksha.model.pojo.add_ons.Addon
 import com.example.abithshiksha.model.pojo.get_filtered_subject.Subject
 import com.example.abithshiksha.model.repo.Outcome
+import com.example.abithshiksha.view.adapter.AddOnsListAdapter
 import com.example.abithshiksha.view.adapter.SelectSubjectAdapter
 import com.example.abithshiksha.view_model.AddToCartViewModel
+import com.example.abithshiksha.view_model.GetAddonsViewModel
 import com.example.abithshiksha.view_model.GetFilteredSubjectViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.thekhaeng.pushdownanim.PushDownAnim
 import com.user.caregiver.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class EnrollNowActivity : AppCompatActivity(), CourseSelectListener {
+class EnrollNowActivity : AppCompatActivity(), CourseSelectListener, AddOnsClickListener {
     private lateinit var binding: ActivityEnrollNowBinding
     private lateinit var accessToken: String
     private val mGetFilteredSubjectViewModel: GetFilteredSubjectViewModel by viewModel()
     private val mAddToCartViewModel: AddToCartViewModel by viewModel()
+    private val mGetAddonsViewModel: GetAddonsViewModel by viewModel()
 
     var subjectList: MutableList<Int> = mutableListOf()
     private var subject_price: Int = 0
     private var subject_count: Int = 0
     private var course_type: Int = 0
     private var subject_id: Int = 0
+    var addOnsList: MutableList<Addon> =  mutableListOf()
 
     lateinit var adapter: SelectSubjectAdapter
     private var board: String = ""
+    private var boardId: String = ""
+
     private var standard: String = ""
+    private var standardId: String = ""
+
     private var stream: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +64,8 @@ class EnrollNowActivity : AppCompatActivity(), CourseSelectListener {
         if (extras != null) {
             board = intent?.getStringExtra("board").toString()
             standard = intent?.getStringExtra("class").toString()
+            boardId = intent?.getStringExtra("board_id").toString()
+            standardId = intent?.getStringExtra("class_id").toString()
             subject_id = intent?.getIntExtra("subject_id",0)!!
 
             board?.let {
@@ -94,7 +110,13 @@ class EnrollNowActivity : AppCompatActivity(), CourseSelectListener {
                     if(course_type != 0){
                         if(subjectList.size > 0){
                             if(isConnectedToInternet()){
-                                addToCart(course_type,subjectList,accessToken,1)
+                                val list: MutableList<Int> = mutableListOf()
+                                for (i in addOnsList){
+                                    if (i.isSelected == true){
+                                        list.add(i.id)
+                                    }
+                                }
+                                addToCart(course_type,subjectList,accessToken,1, list)
                             }else{
                                 Toast.makeText(this,"No internet connection.",Toast.LENGTH_LONG).show()
                             }
@@ -118,7 +140,13 @@ class EnrollNowActivity : AppCompatActivity(), CourseSelectListener {
                     if(course_type != 0){
                         if(subjectList.size > 0){
                             if(isConnectedToInternet()){
-                                addToCart(course_type,subjectList,accessToken,0)
+                                val list: MutableList<Int> = mutableListOf()
+                                for (i in addOnsList){
+                                    if (i.isSelected == true){
+                                        list.add(i.id)
+                                    }
+                                }
+                                addToCart(course_type,subjectList,accessToken,0, list)
                             }else{
                                 Toast.makeText(this,"No internet connection.",Toast.LENGTH_LONG).show()
                             }
@@ -134,6 +162,11 @@ class EnrollNowActivity : AppCompatActivity(), CourseSelectListener {
             }else{
                 Toast.makeText(this,"please select a board.",Toast.LENGTH_SHORT).show()
             }
+        }
+
+
+        PushDownAnim.setPushDownAnimTo(binding.addOnBtn).setOnClickListener {
+            showAddOnsBottomSheet()
         }
     }
 
@@ -151,6 +184,7 @@ class EnrollNowActivity : AppCompatActivity(), CourseSelectListener {
         binding.noDataLot.gone()
         binding.noSubjectTv.gone()
         getFilteredSubject(board,standard,stream,accessToken,false)
+        getAddons(accessToken, boardId.toInt(), standard)
     }
 
     private fun selectCustomPackage(){
@@ -167,6 +201,7 @@ class EnrollNowActivity : AppCompatActivity(), CourseSelectListener {
         binding.noDataLot.gone()
         binding.noSubjectTv.gone()
         getFilteredSubject(board,standard,stream,accessToken,true)
+        getAddons(accessToken, boardId.toInt(), standard)
     }
 
     private fun getFilteredSubject(
@@ -192,6 +227,12 @@ class EnrollNowActivity : AppCompatActivity(), CourseSelectListener {
                             for (i in outcome.data.result.result.subjects){
                                 subjectList.add(i.id)
                             }
+
+                            if(outcome.data.result.result.subjects != null && outcome.data.result.result.subjects.size > 0){
+                                binding.addOnBtn.visible()
+                            }else{
+                                binding.addOnBtn.gone()
+                            }
                         }else{
 
                             outcome.data.result.result.subjects.filter {
@@ -207,6 +248,7 @@ class EnrollNowActivity : AppCompatActivity(), CourseSelectListener {
                             //binding.countTv.text = subject_count.toString()
                             subjectList = mutableListOf()
                             subjectList.add(subject_id)
+                            binding.addOnBtn.gone()
                         }
                         if(outcome.data.result.result.subjects.isNotEmpty()){
                             binding.subjectRecycler.visible()
@@ -247,11 +289,12 @@ class EnrollNowActivity : AppCompatActivity(), CourseSelectListener {
         course_type: Int,
         subjects: List<Int>,
         token: String,
-        isBuy: Int
+        isBuy: Int,
+        addOns: List<Int>
     ){
         val loader = this.loadingDialog()
         loader.show()
-        mAddToCartViewModel.addToCart(course_type, subjects, isBuy, token).observe(this) { outcome ->
+        mAddToCartViewModel.addToCart(course_type, subjects, isBuy, addOns, token).observe(this) { outcome ->
             loader.dismiss()
             when (outcome) {
                 is Outcome.Success -> {
@@ -291,11 +334,90 @@ class EnrollNowActivity : AppCompatActivity(), CourseSelectListener {
             subject_price += price
             subject_count += 1
             subjectList.add(id)
+
+            binding.addOnBtn.visible()
+
         }else{
             subject_price -= price
             subject_count -= 1
             subjectList.remove(id)
+
+            if(subjectList.size < 1){
+                binding.addOnBtn.gone()
+            }else{
+                binding.addOnBtn.visible()
+            }
         }
         binding.priceTv.text = "₹${subject_price.toString()}"
+    }
+
+    private fun getAddons(
+        token: String,
+        board_id: Int,
+        standard: String
+    ){
+        mGetAddonsViewModel.getAddons(token, board_id, standard).observe(this) { outcome ->
+            when (outcome) {
+                is Outcome.Success -> {
+                    if (outcome.data.status == 1) {
+                        addOnsList = mutableListOf()
+                        if(outcome.data.result.addons.size != 0 && outcome.data.result.addons != null){
+                            addOnsList.addAll(outcome.data.result.addons)
+                        }
+                    }else{
+                        Toast.makeText(this, outcome.data.result.message, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is Outcome.Failure<*> -> {
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT)
+                        .show()
+                    Log.i("statusMsg", outcome.e.message.toString())
+
+                    outcome.e.printStackTrace()
+                    Log.i("status", outcome.e.cause.toString())
+                }
+            }
+        }
+    }
+
+    private fun showAddOnsBottomSheet(){
+        val dialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.add_ons_bottomsheet_layout, null)
+
+        val btnClear = view.findViewById<ImageView>(R.id.clear_btn)
+        val coursesRecycler = view.findViewById<RecyclerView>(R.id.add_ons_recycler)
+
+        //setup recycler
+        fillAddOnRecyclerView(addOnsList, coursesRecycler)
+
+        //care type select
+        btnClear.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setCancelable(true)
+        dialog.setContentView(view)
+        dialog.show()
+    }
+
+    private fun fillAddOnRecyclerView(list: List<Addon>, recyclerView: RecyclerView) {
+        val linearLayoutManager = LinearLayoutManager(this)
+        recyclerView.apply {
+            layoutManager = linearLayoutManager
+            setHasFixedSize(true)
+            isFocusable = false
+            adapter = AddOnsListAdapter(list.toMutableList(),this@EnrollNowActivity, this@EnrollNowActivity)
+        }
+    }
+
+    override fun onClick(view: View, id: Int, isChecked: Boolean, price: Int) {
+        addOnsList.find { it.id == id }?.isSelected = isChecked
+        if(isChecked){
+            subject_price += price
+        }else{
+            subject_price -= price
+        }
+        binding.priceTv.text = "₹${subject_price}"
     }
 }

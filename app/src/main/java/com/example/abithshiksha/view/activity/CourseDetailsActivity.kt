@@ -186,6 +186,9 @@ class CourseDetailsActivity : AppCompatActivity() {
                                         val intent = Intent(this, EnrollNowActivity::class.java)
                                         intent.putExtra("board",it.subject_details.board_name)
                                         intent.putExtra("class",it.subject_details.class_name)
+
+                                        intent.putExtra("board_id",it.subject_details.board_id.toString())
+                                        intent.putExtra("class_id",it.subject_details.class_id.toString())
                                         intent.putExtra("subject_id",it.subject_details.id)
                                         startActivity(intent)
                                     }

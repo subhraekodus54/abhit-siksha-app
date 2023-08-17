@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.example.abithshiksha.view.fragment.AddOnsFragment
 import com.example.abithshiksha.view.fragment.ArticleListFragment
 import com.example.abithshiksha.view.fragment.PdfListFragment
 import com.example.abithshiksha.view.fragment.VideoListFragment
@@ -24,7 +25,9 @@ class SubTopicPagerAdapter(var context: Context,
             2 -> {
                 ArticleListFragment(topic_id)
             }
-
+            3 -> {
+                AddOnsFragment(topic_id)
+            }
             else -> getItem(position)
         }
     }
