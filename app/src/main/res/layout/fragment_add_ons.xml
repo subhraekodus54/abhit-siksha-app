@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/empty_list_lot"
         app:layout_constraintStart_toStartOf="@+id/empty_list_lot"
         app:layout_constraintEnd_toEndOf="@id/empty_list_lot"
-        android:text="No article found for this topic"
+        android:text="No Addon found for this topic"
         android:textSize="18sp"
         android:textColor="@color/black"
         android:layout_marginTop="5dp"/>
