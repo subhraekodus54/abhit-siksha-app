@@ -80,6 +80,15 @@
                 android:textColor="#CBCDCB"
                 android:layout_weight="1"/>
             <ImageView
+                android:id="@+id/bt_settings"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:tint="@color/white"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_baseline_settings_24"
+                android:theme="@style/clickableView"/>
+
+            <ImageView
                 android:id="@+id/bt_fullscreen"
                 android:layout_width="30dp"
                 android:layout_height="30dp"

@@ -151,9 +151,12 @@ class VideoListFragment(private val topic_id: Int) : Fragment(), VideoClickListe
         }
     }
 
-    override fun onClick(view: View, id: Int, url: String) {
+    override fun onClick(view: View, id: Int, url: String, url_480: String, url_720: String) {
         val intent = Intent(context, VideoPlayActivity::class.java)
         intent.putExtra("url",url)
+        intent.putExtra("url_480",url_480)
+        intent.putExtra("url_720",url_720)
+
         intent.putExtra("id",id)
         intent.putExtra("user_id", user_id)
         startActivity(intent)

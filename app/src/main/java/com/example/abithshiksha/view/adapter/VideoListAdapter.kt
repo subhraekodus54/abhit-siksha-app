@@ -66,7 +66,7 @@ class VideoListAdapter(private val itemList: MutableList<Video>,
                     lockBtn.gone()
                     playBtn.visible()
                     rootLay.setOnClickListener {
-                        videoClickListener.onClick(it.rootView, data?.id, data?.original_video_path)
+                        videoClickListener.onClick(it.rootView, data?.id, data?.original_video_path, data?.video_size_480, data?.video_size_720)
                     }
                 }else{
                     lockBtn.visible()

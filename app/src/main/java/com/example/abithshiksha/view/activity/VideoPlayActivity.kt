@@ -1,14 +1,20 @@
 package com.example.abithshiksha.view.activity
 
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.example.abithshiksha.R
 import com.example.abithshiksha.databinding.ActivityVideoPlayBinding
 import com.example.abithshiksha.helper.PrefManager
@@ -20,6 +26,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.DefaultTimeBar
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.user.caregiver.gone
 import com.user.caregiver.lightStatusBar
 import com.user.caregiver.visible
@@ -40,11 +47,17 @@ class VideoPlayActivity : AppCompatActivity() {
     private lateinit var bt_lock: ImageView
     private lateinit var bt_progress_bar: DefaultTimeBar
     private lateinit var bt_fullscreen: ImageView
-    private lateinit var video_url: String
+    private lateinit var bt_settings: ImageView
+    private val video_url = MutableLiveData<String>()
+
+    private var original_url: String? = null
+    private var url_480p: String? = null
+    private var url_720p: String? = null
 
     private var video_id: Int = 0
     private var startTime: String = ""
     private var user_id: String? = null
+    private var mLastPosition: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +67,10 @@ class VideoPlayActivity : AppCompatActivity() {
 
         val extras = intent.extras
         if (extras != null) {
-            video_url = intent?.getStringExtra("url").toString()
+            original_url = intent?.getStringExtra("url")
+            url_480p = intent?.getStringExtra("url_480")
+            url_720p = intent?.getStringExtra("url_720")
+
             video_id = intent?.getIntExtra("id",0)!!
             user_id = intent?.getStringExtra("user_id").toString()
         }
@@ -73,6 +89,7 @@ class VideoPlayActivity : AppCompatActivity() {
         bt_fullscreen = findViewById<ImageView>(R.id.bt_fullscreen)
         bt_lock = findViewById<ImageView>(R.id.exo_lock)
         bt_progress_bar = findViewById<DefaultTimeBar>(R.id.exo_progress)
+        bt_settings = findViewById<ImageView>(R.id.bt_settings)
 
         bt_fullscreen.setOnClickListener {
             if(!isFullScreen){
@@ -83,6 +100,10 @@ class VideoPlayActivity : AppCompatActivity() {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
             }
             isFullScreen = !isFullScreen
+        }
+
+        bt_settings.setOnClickListener {
+            showSettingsDialog()
         }
 
         bt_lock.setOnClickListener {
@@ -107,10 +128,14 @@ class VideoPlayActivity : AppCompatActivity() {
             }
         })
 
-        val mediaItem = MediaItem.fromUri(ApiConstants.PUBLIC_URL+video_url)
-        simpleExoplayer.setMediaItem(mediaItem)
-        simpleExoplayer.prepare()
-        simpleExoplayer.play()
+        video_url.postValue(original_url!!)
+        video_url.observe(this ,Observer{
+            val mediaItem = MediaItem.fromUri(ApiConstants.PUBLIC_URL+it)
+            simpleExoplayer.setMediaItem(mediaItem)
+            simpleExoplayer.prepare()
+            simpleExoplayer.play()
+            simpleExoplayer.seekTo(mLastPosition)
+        })
 
         user_id?.let {
             binding.userIdTv.text = user_id
@@ -174,4 +199,38 @@ class VideoPlayActivity : AppCompatActivity() {
         return endTime
     }
 
+    private fun showSettingsDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setContentView(R.layout.video_settings_bottomsheet_layout)
+
+        val videoQRbg = dialog.findViewById<RadioGroup>(R.id.video_q_rbg)
+
+        videoQRbg.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.q_original -> {
+                    mLastPosition = simpleExoplayer.currentPosition
+                    video_url?.postValue(original_url!!)
+                    simpleExoplayer.pause()
+                    dialog.dismiss()
+                }
+                R.id.q_480 -> {
+                    mLastPosition = simpleExoplayer.currentPosition
+                    video_url?.postValue(url_480p!!)
+                    simpleExoplayer.pause()
+                    dialog.dismiss()
+                }
+                R.id.q_720 -> {
+                    mLastPosition = simpleExoplayer.currentPosition
+                    video_url?.postValue(url_720p!!)
+                    simpleExoplayer.pause()
+                    dialog.dismiss()
+                }
+            }
+        })
+
+        dialog.show()
+    }
 }

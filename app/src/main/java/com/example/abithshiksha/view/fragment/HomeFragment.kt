@@ -51,7 +51,6 @@ class HomeFragment : Fragment(), SubjectClickListener {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         return root
     }
 
