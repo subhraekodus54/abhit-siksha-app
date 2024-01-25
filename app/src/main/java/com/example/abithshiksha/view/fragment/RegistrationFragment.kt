@@ -91,8 +91,8 @@ class RegistrationFragment : Fragment() {
         conPasswordFocusListener()
         nameFocusListener()
         parentsNameFocusListener()
-        binding.verifyEmailHtv.gone()
-        binding.verifyMobileHtv.gone()
+        /*binding.verifyEmailHtv.gone()
+        binding.verifyMobileHtv.gone()*/
         binding.progressBar.gone()
         binding.parentsNameTxtLay.gone()
         binding.classSpinnerLay.gone()
@@ -115,7 +115,7 @@ class RegistrationFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        binding.verifyEmailHtv.setOnClickListener {
+        /*binding.verifyEmailHtv.setOnClickListener {
             if(requireActivity().isConnectedToInternet()){
                 sendEmailOtp(binding.emailTxt.text.toString(),accessToken,false)
             }else{
@@ -130,7 +130,7 @@ class RegistrationFragment : Fragment() {
             }else{
                 Toast.makeText(requireActivity(),"No internet connection.",Toast.LENGTH_SHORT).show()
             }
-        }
+        }*/
 
         binding.signupBtn.setOnClickListener {
             submitForm()
@@ -309,15 +309,15 @@ class RegistrationFragment : Fragment() {
         val emailText = binding.emailTxt.text.toString()
 
         if(!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
-            binding.verifyEmailHtv.gone()
+            //binding.verifyEmailHtv.gone()
             binding.emailTxt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
             return "Invalid Email Address"
         }else{
             if(emailVerify != binding.emailTxt.text.toString()){
-                binding.verifyEmailHtv.visible()
+                //binding.verifyEmailHtv.visible()
                 binding.emailTxt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
             }else{
-                binding.verifyEmailHtv.gone()
+                //binding.verifyEmailHtv.gone()
                 binding.emailTxt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireActivity(),R.drawable.ic_baseline_check_24), null)
             }
         }
@@ -333,7 +333,7 @@ class RegistrationFragment : Fragment() {
     private fun validMobileNumber(): String? {
         val mobileText = binding.mobileTxt.text.toString()
         if(mobileText.length != 10){
-            binding.verifyMobileHtv.gone()
+            //binding.verifyMobileHtv.gone()
             binding.mobileTxt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
             return "10 digit number required."
         }else{
@@ -342,11 +342,11 @@ class RegistrationFragment : Fragment() {
                 if(binding.mobileTxt.text.toString().toDouble() == 0.00){
                     return "Please provide a valid phone number."
                 }else{
-                    binding.verifyMobileHtv.visible()
+                    //binding.verifyMobileHtv.visible()
                     binding.mobileTxt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
                 }
             }else{
-                binding.verifyMobileHtv.gone()
+                //binding.verifyMobileHtv.gone()
                 binding.mobileTxt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireActivity(),R.drawable.ic_baseline_check_24), null)
             }
         }
@@ -747,7 +747,7 @@ class RegistrationFragment : Fragment() {
                 is Outcome.Success -> {
                     if (outcome.data.status == 1) {
                         Toast.makeText(requireActivity(), outcome.data.result.message, Toast.LENGTH_SHORT).show()
-                        binding.verifyMobileHtv.gone()
+                        //binding.verifyMobileHtv.gone()
                         mobileVerify = phone
                         binding.mobileTxt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireActivity(),R.drawable.ic_baseline_check_24), null)
                         numberOtpDialog.dismiss()
@@ -821,7 +821,7 @@ class RegistrationFragment : Fragment() {
                 is Outcome.Success -> {
                     if (outcome.data.status == 1) {
                         Toast.makeText(requireActivity(), outcome.data.result.message, Toast.LENGTH_SHORT).show()
-                        binding.verifyEmailHtv.gone()
+                        //binding.verifyEmailHtv.gone()
                         emailVerify = binding.emailTxt.text.toString()
                         binding.emailTxt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireActivity(),R.drawable.ic_baseline_check_24), null)
                         emailOtpDialog.dismiss()
