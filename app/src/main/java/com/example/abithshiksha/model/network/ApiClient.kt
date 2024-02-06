@@ -13,6 +13,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 class ApiClient {
 
@@ -61,7 +64,12 @@ class ApiClient {
             mLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         }
 
-        return OkHttpClient.Builder()
+        val httpClient = OkHttpClient.Builder()
+
+        // Trust all certificates
+        trustAllCertificates(httpClient)
+
+        return httpClient
             .cache(getCache(context))
             .addInterceptor(mLoggingInterceptor)
             .addInterceptor(TokenRenewInterceptor(context))
@@ -136,5 +144,34 @@ class ApiClient {
 
         const val HEADER_CACHE_CONTROL = "Cache-Control"
         const val HEADER_PRAGMA = "Pragma"
+    }
+
+
+    private fun trustAllCertificates(httpClientBuilder: OkHttpClient.Builder) {
+        try {
+            val trustAllCerts: Array<TrustManager> = arrayOf(
+                object : X509TrustManager {
+                    override fun checkClientTrusted(chain: Array<out java.security.cert.X509Certificate>?, authType: String?) {
+                    }
+
+                    override fun checkServerTrusted(chain: Array<out java.security.cert.X509Certificate>?, authType: String?) {
+                    }
+
+                    override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> {
+                        return arrayOf()
+                    }
+                }
+            )
+
+            // Install the custom TrustManager
+            val sslContext = SSLContext.getInstance("TLS")
+            sslContext.init(null, trustAllCerts, java.security.SecureRandom())
+            val sslSocketFactory = sslContext.socketFactory
+
+            httpClientBuilder.sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
+            httpClientBuilder.hostnameVerifier { _, _ -> true }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
