@@ -270,14 +270,14 @@
                     android:textCursorDrawable="@null"
                     android:textSize="16sp" />
 
-                <!--<TextView
+                <TextView
                     android:id="@+id/verify_email_htv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginEnd="4dp"
                     android:text="Verify"
-                    android:textColor="@color/green_2" />-->
+                    android:textColor="@color/green_2" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -316,14 +316,14 @@
                     android:textCursorDrawable="@null"
                     android:textSize="16sp" />
 
-                <!--<TextView
+                <TextView
                     android:id="@+id/verify_mobile_htv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginEnd="4dp"
                     android:text="Verify"
-                    android:textColor="@color/green_2" />-->
+                    android:textColor="@color/green_2" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
