@@ -10,8 +10,6 @@ import android.view.View
 import android.view.Window
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -19,20 +17,26 @@ import com.example.abithshiksha.R
 import com.example.abithshiksha.databinding.ActivityVideoPlayBinding
 import com.example.abithshiksha.helper.PrefManager
 import com.example.abithshiksha.model.network.ApiConstants
-import com.example.abithshiksha.model.repo.Outcome
 import com.example.abithshiksha.service.VideoWatchTimeService
-import com.example.abithshiksha.view_model.SubmitWatchTimeViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.DefaultTimeBar
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException
+import com.google.android.gms.common.GooglePlayServicesRepairableException
+import com.google.android.gms.security.ProviderInstaller
 import com.user.caregiver.gone
 import com.user.caregiver.lightStatusBar
 import com.user.caregiver.visible
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.security.KeyManagementException
+import java.security.NoSuchAlgorithmException
+import java.security.cert.CertificateException
+import java.security.cert.X509Certificate
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 
 class VideoPlayActivity : AppCompatActivity() {
@@ -58,6 +62,25 @@ class VideoPlayActivity : AppCompatActivity() {
     private var startTime: String = ""
     private var user_id: String? = null
     private var mLastPosition: Long = 0
+    private val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+        override fun getAcceptedIssuers(): Array<X509Certificate> {
+            return arrayOf()
+        }
+
+        @Throws(CertificateException::class)
+        override fun checkClientTrusted(
+            chain: Array<X509Certificate?>?,
+            authType: String?
+        ) {
+        }
+
+        @Throws(CertificateException::class)
+        override fun checkServerTrusted(
+            chain: Array<X509Certificate?>?,
+            authType: String?
+        ) {
+        }
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +97,24 @@ class VideoPlayActivity : AppCompatActivity() {
             video_id = intent?.getIntExtra("id",0)!!
             user_id = intent?.getStringExtra("user_id").toString()
         }
+
+        try {
+            ProviderInstaller.installIfNeeded(applicationContext)
+            val sslContext: SSLContext
+            sslContext = SSLContext.getInstance("SSL")
+            sslContext.init(null, trustAllCerts, null)
+            sslContext.createSSLEngine()
+        } catch (e: GooglePlayServicesRepairableException) {
+            e.printStackTrace()
+        } catch (e: GooglePlayServicesNotAvailableException) {
+            e.printStackTrace()
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
+        } catch (e: KeyManagementException) {
+            e.printStackTrace()
+        }
+
+
         startTime = startTime()
 
         //get token
